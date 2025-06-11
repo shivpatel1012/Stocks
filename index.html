@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login | Elegant Auth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* CSS Reset */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+      background-color: #ffffff;
+      color: #6b7280;
+      /* neutral gray */
+      font-size: 17px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 4rem;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      height: 64px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 10;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.375rem;
+      color: #111827;
+      user-select: none;
+      letter-spacing: 0.06em;
+    }
+
+    nav a {
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-left: 1.75rem;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      color: #111827;
+      outline: none;
+    }
+
+    main {
+      width: 100%;
+      max-width: 420px;
+      margin-top: 6rem;
+      background: #f9fafb;
+      padding: 3rem 2.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07);
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 48px;
+      line-height: 1.1;
+      margin: 0 0 0.5rem;
+      color: #111827;
+      user-select: none;
+    }
+
+    p.description {
+      color: #6b7280;
+      font-size: 18px;
+      margin: 0 0 2.5rem;
+      user-select: none;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+      color: #4b5563;
+      user-select: none;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      font-size: 1rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: 0.5rem;
+      transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+      outline-offset: 2px;
+      outline-color: transparent;
+      font-family: inherit;
+      color: #111827;
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #111827;
+      box-shadow: 0 0 10px rgba(17, 24, 39, 0.4);
+      outline-color: transparent;
+    }
+
+    button[type="submit"] {
+      margin-top: 2rem;
+      background-color: #111827;
+      color: white;
+      font-weight: 700;
+      font-size: 1.35rem;
+      border: none;
+      border-radius: 0.75rem;
+      padding: 1.15rem 1rem;
+      cursor: pointer;
+      user-select: none;
+      transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+      box-shadow: 0 5px 14px rgba(17, 24, 39, 0.38);
+    }
+
+    button[type="submit"]:hover,
+    button[type="submit"]:focus {
+      background-color: #1f2937;
+      transform: scale(1.05);
+      outline: none;
+      box-shadow: 0 7px 19px rgba(17, 24, 39, 0.52);
+    }
+
+    button[type="submit"]:active {
+      transform: scale(1);
+      box-shadow: 0 4px 9px rgba(17, 24, 39, 0.32);
+    }
+
+    button.toggle-mode {
+      margin-top: 2.25rem;
+      background: transparent;
+      border: none;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #2563eb;
+      cursor: pointer;
+      text-align: center;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+
+    button.toggle-mode:hover,
+    button.toggle-mode:focus {
+      color: #1e40af;
+      outline: none;
+      text-decoration: underline;
+    }
+
+    .message {
+      font-weight: 600;
+      font-size: 1rem;
+      min-height: 1.4rem;
+      margin-top: 0.5rem;
+      user-select: none;
+      color: transparent;
+      transition: color 0.3s ease;
+    }
+
+    .message.error {
+      color: #dc2626;
+    }
+
+    .message.success {
+      color: #16a34a;
+    }
+
+    @media (max-width: 480px) {
+      main {
+        max-width: 90vw;
+        margin-top: 4rem;
+        padding: 2.8rem 2rem;
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      button[type="submit"] {
+        font-size: 1.25rem;
+        padding: 1rem 0.8rem;
+      }
+
+      button.toggle-mode {
+        font-size: 1rem;
+      }
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js" defer></script>
+</head>
+
+<body>
+  <header role="banner">
+    <div class="logo" aria-label="Site Logo">ElegantAuth</div>
+    <nav aria-label="Primary navigation">
+      <a href="#" tabindex="0" aria-label="Help page">Help</a>
+      <a href="#" tabindex="0" aria-label="Documentation page">Docs</a>
+    </nav>
+  </header>
+  <main role="main" aria-labelledby="form-heading" aria-describedby="form-desc">
+    <h1 id="form-heading">Sign in to your account</h1>
+    <p id="form-desc" class="description">Welcome back! Please login with your email and password.</p>
+    <form id="auth-form" novalidate aria-live="polite">
+      <div>
+        <label for="email" id="email-label">Email address</label>
+        <input type="email" id="email" name="email" autocomplete="email" required aria-describedby="email-label"
+          aria-required="true" placeholder="you@example.com" />
+      </div>
+      <div>
+        <label for="password" id="password-label">Password</label>
+        <input type="password" id="password" name="password" autocomplete="current-password" minlength="6" required
+          aria-describedby="password-label" aria-required="true" placeholder="••••••••" />
+      </div>
+      <button type="submit" id="submit-btn" aria-live="polite" aria-atomic="true">
+        Sign In
+      </button>
+      <p id="form-message" class="message" role="alert" aria-live="assertive" aria-atomic="true"></p>
+    </form>
+    <button type="button" id="toggle-mode-btn" class="toggle-mode" aria-describedby="toggle-desc"
+      aria-label="Toggle between sign in and create account modes">
+      Don't have an account? Create one
+    </button>
+  </main>
+
+  <script>
+    // Firebase configuration object
+    const firebaseConfig = {
+      apiKey: "AIzaSyDnuMpSWYNorlEvtziijc_LjqfchLZvJyI",
+      authDomain: "stocks-d8495.firebaseapp.com",
+      projectId: "stocks-d8495"
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+
+      const form = document.getElementById('auth-form');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const submitBtn = document.getElementById('submit-btn');
+      const toggleBtn = document.getElementById('toggle-mode-btn');
+      const formHeading = document.getElementById('form-heading');
+      const formDesc = document.getElementById('form-desc');
+      const formMessage = document.getElementById('form-message');
+
+      let isLoginMode = true;
+
+      // Clear feedback messages
+      function clearMessage() {
+        formMessage.textContent = '';
+        formMessage.classList.remove('error', 'success');
+      }
+
+      // Show feedback messages
+      function showMessage(message, type) {
+        formMessage.textContent = message;
+        formMessage.classList.remove('error', 'success');
+        if (type === 'error') {
+          formMessage.classList.add('error');
+        } else if (type === 'success') {
+          formMessage.classList.add('success');
+        }
+      }
+
+      // Toggle between login and signup modes
+      toggleBtn.addEventListener('click', () => {
+        clearMessage();
+        isLoginMode = !isLoginMode;
+        if (isLoginMode) {
+          formHeading.textContent = 'Sign in to your account';
+          formDesc.textContent = 'Welcome back! Please login with your email and password.';
+          submitBtn.textContent = 'Sign In';
+          toggleBtn.textContent = "Don't have an account? Create one";
+          passwordInput.autocomplete = "current-password";
+          emailInput.focus();
+        } else {
+          formHeading.textContent = 'Create your account';
+          formDesc.textContent = 'Start your journey by creating a new account.';
+          submitBtn.textContent = 'Create Account';
+          toggleBtn.textContent = 'Already have an account? Sign in';
+          passwordInput.autocomplete = "new-password";
+          emailInput.focus();
+        }
+      });
+
+      // Handle form submission for login/signup
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        clearMessage();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!email) {
+          showMessage('Please enter your email address.', 'error');
+          emailInput.focus();
+          return;
+        }
+
+        if (!password || password.length < 6) {
+          showMessage('Password must be at least 6 characters.', 'error');
+          passwordInput.focus();
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = isLoginMode ? 'Signing in...' : 'Creating account...';
+
+        try {
+          if (isLoginMode) {
+            await auth.signInWithEmailAndPassword(email, password);
+          } else {
+            await auth.createUserWithEmailAndPassword(email, password);
+          }
+          showMessage('Success! Redirecting to home page...', 'success');
+          // Redirect to home page after short delay
+          setTimeout(() => {
+
+            window.location.href = 'https://shivpatel1012.github.io/Stocks/home.html';
+          }, 1500);
+        } catch (error) {
+          // Firebase error message is user-friendly enough
+          showMessage(error.message || 'Authentication failed.', 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = isLoginMode ? 'Sign In' : 'Create Account';
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
