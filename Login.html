@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,15 +8,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
     /* CSS Reset */
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
     }
+
     body {
       margin: 0;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
         Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
       background-color: #ffffff;
-      color: #6b7280; /* neutral gray */
+      color: #6b7280;
+      /* neutral gray */
       font-size: 17px;
       line-height: 1.6;
       min-height: 100vh;
@@ -26,12 +31,13 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
+
     header {
       position: sticky;
       top: 0;
       background: #ffffff;
       height: 64px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
@@ -41,6 +47,7 @@
       padding: 0 2rem;
       z-index: 10;
     }
+
     .logo {
       font-weight: 800;
       font-size: 1.375rem;
@@ -48,6 +55,7 @@
       user-select: none;
       letter-spacing: 0.06em;
     }
+
     nav a {
       color: #6b7280;
       text-decoration: none;
@@ -56,7 +64,9 @@
       margin-left: 1.75rem;
       transition: color 0.3s ease;
     }
-    nav a:hover, nav a:focus {
+
+    nav a:hover,
+    nav a:focus {
       color: #111827;
       outline: none;
     }
@@ -68,8 +78,9 @@
       background: #f9fafb;
       padding: 3rem 2.5rem;
       border-radius: 0.75rem;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.07);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07);
     }
+
     h1 {
       font-weight: 700;
       font-size: 48px;
@@ -78,17 +89,20 @@
       color: #111827;
       user-select: none;
     }
+
     p.description {
       color: #6b7280;
       font-size: 18px;
       margin: 0 0 2.5rem;
       user-select: none;
     }
+
     form {
       display: flex;
       flex-direction: column;
       gap: 1.6rem;
     }
+
     label {
       display: block;
       font-weight: 600;
@@ -97,6 +111,7 @@
       color: #4b5563;
       user-select: none;
     }
+
     input[type="email"],
     input[type="password"] {
       width: 100%;
@@ -112,12 +127,14 @@
       font-family: inherit;
       color: #111827;
     }
+
     input[type="email"]:focus,
     input[type="password"]:focus {
       border-color: #111827;
       box-shadow: 0 0 10px rgba(17, 24, 39, 0.4);
       outline-color: transparent;
     }
+
     button[type="submit"] {
       margin-top: 2rem;
       background-color: #111827;
@@ -134,6 +151,7 @@
         transform 0.2s ease;
       box-shadow: 0 5px 14px rgba(17, 24, 39, 0.38);
     }
+
     button[type="submit"]:hover,
     button[type="submit"]:focus {
       background-color: #1f2937;
@@ -141,10 +159,12 @@
       outline: none;
       box-shadow: 0 7px 19px rgba(17, 24, 39, 0.52);
     }
+
     button[type="submit"]:active {
       transform: scale(1);
       box-shadow: 0 4px 9px rgba(17, 24, 39, 0.32);
     }
+
     button.toggle-mode {
       margin-top: 2.25rem;
       background: transparent;
@@ -157,12 +177,14 @@
       user-select: none;
       transition: color 0.3s ease;
     }
+
     button.toggle-mode:hover,
     button.toggle-mode:focus {
       color: #1e40af;
       outline: none;
       text-decoration: underline;
     }
+
     .message {
       font-weight: 600;
       font-size: 1rem;
@@ -172,9 +194,11 @@
       color: transparent;
       transition: color 0.3s ease;
     }
+
     .message.error {
       color: #dc2626;
     }
+
     .message.success {
       color: #16a34a;
     }
@@ -185,13 +209,16 @@
         margin-top: 4rem;
         padding: 2.8rem 2rem;
       }
+
       h1 {
         font-size: 38px;
       }
+
       button[type="submit"] {
         font-size: 1.25rem;
         padding: 1rem 0.8rem;
       }
+
       button.toggle-mode {
         font-size: 1rem;
       }
@@ -200,6 +227,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js" defer></script>
 </head>
+
 <body>
   <header role="banner">
     <div class="logo" aria-label="Site Logo">ElegantAuth</div>
@@ -214,43 +242,21 @@
     <form id="auth-form" novalidate aria-live="polite">
       <div>
         <label for="email" id="email-label">Email address</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          autocomplete="email"
-          required
-          aria-describedby="email-label"
-          aria-required="true"
-          placeholder="you@example.com"
-        />
+        <input type="email" id="email" name="email" autocomplete="email" required aria-describedby="email-label"
+          aria-required="true" placeholder="you@example.com" />
       </div>
       <div>
         <label for="password" id="password-label">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          autocomplete="current-password"
-          minlength="6"
-          required
-          aria-describedby="password-label"
-          aria-required="true"
-          placeholder="••••••••"
-        />
+        <input type="password" id="password" name="password" autocomplete="current-password" minlength="6" required
+          aria-describedby="password-label" aria-required="true" placeholder="••••••••" />
       </div>
       <button type="submit" id="submit-btn" aria-live="polite" aria-atomic="true">
         Sign In
       </button>
       <p id="form-message" class="message" role="alert" aria-live="assertive" aria-atomic="true"></p>
     </form>
-    <button
-      type="button"
-      id="toggle-mode-btn"
-      class="toggle-mode"
-      aria-describedby="toggle-desc"
-      aria-label="Toggle between sign in and create account modes"
-    >
+    <button type="button" id="toggle-mode-btn" class="toggle-mode" aria-describedby="toggle-desc"
+      aria-label="Toggle between sign in and create account modes">
       Don't have an account? Create one
     </button>
   </main>
@@ -348,8 +354,8 @@
           showMessage('Success! Redirecting to home page...', 'success');
           // Redirect to home page after short delay
           setTimeout(() => {
-            
-            window.location.href = ' https://shivpatel1012.github.io/Stocks/home.html';
+
+            window.location.href = 'https://shivpatel1012.github.io/Stocks/home.html';
           }, 1500);
         } catch (error) {
           // Firebase error message is user-friendly enough
@@ -362,5 +368,5 @@
     });
   </script>
 </body>
-</html>
 
+</html>
