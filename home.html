@@ -529,7 +529,7 @@
         } else {
           console.log('Redirecting to login.html');
           alert('Please sign in to continue.');
-          window.location.href = 'https://shivpatel1012.github.io/Stocks/Login.html';
+          window.location.href = 'https://shivpatel1012.github.io/Stocks/index.html';
         }
       });
 
@@ -566,7 +566,7 @@
           console.log(`Action: ${action}`);
           if (action === 'logout') {
             auth.signOut().then(() => {
-              window.location.href = 'https://shivpatel1012.github.io/Stocks/Login.html';
+              window.location.href = 'https://shivpatel1012.github.io/Stocks/index.html';
             });
           }
           dropdownMenu.classList.remove('active');
