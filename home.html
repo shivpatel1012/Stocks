@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory Management | ElegantAuth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f7fafc;
+      color: #2d3748;
+      font-size: 16px;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      background: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0.05);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a202c;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .dropdown {
+      position: relative;
+      user-select: none;
+    }
+
+    .dropdown-toggle {
+      padding: 0.5rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.375rem;
+      background: #ffffff;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .dropdown-toggle:hover {
+      background: #edf2f7;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.375rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      min-width: 150px;
+      overflow: hidden;
+    }
+
+    .dropdown-menu.active {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      color: #4a5568;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+      background: #edf2f7;
+    }
+
+    main {
+      max-width: 800px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #ffffff;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: #1a202c;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #4a5568;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      color: #2d3748;
+      transition: border-color 0.2s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3182ce;
+      box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.1);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button.in {
+      background: #38a169;
+      color: #ffffff;
+    }
+
+    button.in:hover {
+      background: #2f855a;
+    }
+
+    button.out {
+      background: #e53e3e;
+      color: #ffffff;
+    }
+
+    button.out:hover {
+      background: #c53030;
+    }
+
+    button.edit {
+      background: #3182ce;
+      color: #ffffff;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+    }
+
+    button.edit:hover {
+      background: #2b6cb0;
+    }
+
+    button.cancel {
+      background: #718096;
+      color: #ffffff;
+    }
+
+    button.cancel:hover {
+      background: #5a67d8;
+    }
+
+    .data-display {
+      margin-top: 2rem;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1a202c;
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #ffffff;
+      border-radius: 0.375rem;
+      overflow: hidden;
+    }
+
+    th,
+    td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+
+    th {
+      background: #edf2f7;
+      font-weight: 600;
+      color: #4a5568;
+    }
+
+    td {
+      border-top: 1px solid #e2e8f0;
+      color: #2d3748;
+    }
+
+    tr:hover {
+      background: #f7fafc;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #718096;
+      font-style: italic;
+    }
+
+    #output {
+      margin-bottom: 1rem;
+      color: #2d3748;
+      font-size: 0.875rem;
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #38a169;
+      color: #ffffff;
+      padding: 1rem;
+      border-radius: 0.375rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    input[list]::-webkit-calendar-picker-indicator {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 1rem;
+      }
+
+      main {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+
+</head>
+
+<body>
+  <header role="banner">
+    <div class="header-container">
+      <a href="/" class="logo">Stocks</a>
+      <nav>
+        <div class="dropdown">
+          <div class="dropdown-toggle" id="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+            Menu
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" aria-labelledby="dropdown-toggle">
+            <!-- <div class="dropdown-item" data-action="profile">Profile</div>
+            <div class="dropdown-item" data-action="settings">Settings</div> -->
+            <div class="dropdown-item" data-action="logout">Logout</div>
+          </div>
+        </div>
+        <button id="download-btn">Download Stock Data as Excel</button>
+    </div>
+    </nav>
+    </div>
+  </header>
+  <main role="main">
+    <h1>Stocks Management</h1>
+    <!-- <div id="output"></div> -->
+    <form id="inventory-form">
+      <div class="input-group">
+        <label for="name">Item Name</label>
+        <input type="text" id="name" placeholder="Enter item name" list="item-names" required aria-required="true" />
+        <datalist id="item-names"></datalist>
+      </div>
+      <div class="input-group">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" placeholder="Enter quantity to add/remove" min="0" required
+          aria-required="true" />
+      </div>
+      <div class="input-group">
+        <label for="expiry-date">Expiry Date</label>
+        <input type="date" id="expiry-date" aria-required="true" />
+      </div>
+      <div class="input-group">
+        <label for="price">Price ($)</label>
+        <input type="number" id="price" placeholder="Enter price" min="0" step="0.01" aria-required="true" />
+      </div>
+      <div class="button-group">
+        <button type="submit" class="in" id="submit-button">Add Quantity</button>
+        <button type="button" class="out" id="out-button">Remove Quantity</button>
+        <button type="button" class="cancel" id="cancel-button" style="display: none;">Cancel</button>
+      </div>
+    </form>
+    <div class="data-display">
+      <h2>Inventory List</h2>
+      <table id="data-table" aria-describedby="inventory-table-description">
+        <caption id="inventory-table-description" class="sr-only">List of inventory items</caption>
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Expiry Date</th>
+            <th scope="col">Price</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="data-table-body">
+          <tr>
+            <td colspan="5" class="loading">Loading data...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM fully loaded and parsed');
+
+      // Firebase Configuration (Replace with your actual config)
+      const firebaseConfig = {
+        databaseURL: "https://stocks-d8495-default-rtdb.firebaseio.com",
+        apiKey: "AIzaSyDnuMpSWYNorlEvtziijc_LjqfchLZvJyI",
+        authDomain: "stocks-d8495.firebaseapp.com",
+        projectId: "stocks-d8495",
+        storageBucket: "stocks-d8495.appspot.com",
+        messagingSenderId: "1011713162460",
+        appId: "1:1011713162460:web:4438ad1bf0a6504119c819",
+        measurementId: "G-36KZSQB8FV"
+      };
+
+      try {
+        firebase.initializeApp(firebaseConfig);
+        console.log('Firebase initialized successfully');
+      } catch (error) {
+        console.error('Firebase initialization failed:', error.message);
+      }
+
+      const database = firebase.database();
+      const auth = firebase.auth();
+
+      // Load dropdown options (placeholder)
+      function loadDropdownOptions(database) {
+        console.log('loadDropdownOptions called (placeholder)');
+      }
+
+      // Update item name suggestions
+      function updateItemSuggestions(database, userId) {
+        database.ref(`user/${userId}/json/QUANTITY_SHEET/`).on('value', (snapshot) => {
+          console.log('Updating item suggestions');
+          const datalist = document.getElementById('item-names');
+          const itemNames = new Set();
+          datalist.innerHTML = '';
+          if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+              const itemName = childSnapshot.val().ITEM;
+              if (itemName && !itemNames.has(itemName.toLowerCase())) {
+                itemNames.add(itemName.toLowerCase());
+                const option = document.createElement('option');
+                option.value = itemName;
+                datalist.appendChild(option);
+              }
+            });
+          }
+        }, (error) => {
+          console.error('Error fetching item names:', error.message);
+          showToast('Error loading suggestions', true);
+        });
+      }
+
+      // Setup data listeners
+      function setupDataListeners(database, userId) {
+        database.ref(`user/${userId}/json/QUANTITY_SHEET/`).on('value', (snapshot) => {
+          console.log('Data snapshot received');
+          const dataTableBody = document.getElementById('data-table-body');
+          dataTableBody.innerHTML = '';
+          if (snapshot.exists()) {
+            let lastItemKey = null;
+            snapshot.forEach((childSnapshot) => {
+              const data = childSnapshot.val();
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td>${data.ITEM || 'N/A'}</td>
+                <td>${data.QUANTITY || 'N/A'}</td>
+                <td>${data.EXP_DATE || 'N/A'}</td>
+                <td>$${parseFloat(data.PRICE || 0).toFixed(2)}</td>
+                <td><button class="edit" data-key="${childSnapshot.key}">Edit</button></td>
+              `;
+              dataTableBody.appendChild(row);
+              lastItemKey = childSnapshot.key;
+            });
+            const outputElement = document.getElementById('output');
+            if (outputElement) {
+              outputElement.innerHTML = `Last Item Key: ${lastItemKey}`;
+              console.log('Last item key:', lastItemKey);
+            }
+          } else {
+            dataTableBody.innerHTML = '<tr><td colspan="5" class="loading">No data available</td></tr>';
+            const outputElement = document.getElementById('output');
+            if (outputElement) {
+              outputElement.innerHTML = 'No items available';
+            }
+          }
+        }, (error) => {
+          console.error('Error fetching data:', error.message);
+          dataTableBody.innerHTML = '<tr><td colspan="5" class="loading">Error loading data</td></tr>';
+        });
+      }
+
+      // Toast notification function
+      function showToast(message, isError = false, className = '') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${className}`;
+        toast.textContent = message;
+        if (isError) {
+          toast.style.background = '#e53e3e';
+        }
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.classList.add('show');
+          setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+          }, 3000);
+        }, 100);
+      }
+
+      // Handle authentication state
+      auth.onAuthStateChanged(user => {
+        console.log('Auth state changed:', user ? `User signed in with UID: ${user.uid}` : 'No user signed in');
+        if (user) {
+          const userId = user.uid;
+          console.log('User ID:', userId);
+          try {
+            loadDropdownOptions(database);
+            console.log('loadDropdownOptions called');
+            setupDataListeners(database, userId);
+            console.log('setupDataListeners called');
+            updateItemSuggestions(database, userId);
+            console.log('updateItemSuggestions called');
+            const outputElement = document.getElementById('output');
+            if (outputElement) {
+              outputElement.innerHTML = 'Loading last item key...';
+              console.log('Output element initialized');
+            } else {
+              console.error('Output element not found in DOM');
+            }
+          } catch (error) {
+            console.error('Error in signed-in block:', error.message);
+          }
+        } else {
+          console.log('Redirecting to login.html');
+          alert('Please sign in to continue.');
+          window.location.href = 'login.html';
+        }
+      });
+
+      // DOM Elements
+      const dropdownToggle = document.getElementById('dropdown-toggle');
+      const dropdownMenu = document.getElementById('dropdown-menu');
+      const inventoryForm = document.getElementById('inventory-form');
+      const submitButton = document.getElementById('submit-button');
+      const outButton = document.getElementById('out-button');
+      const cancelButton = document.getElementById('cancel-button');
+      const dataTableBody = document.getElementById('data-table-body');
+      const downloadBtn = document.getElementById('download-btn');
+
+
+      let isUpdateMode = false;
+      let currentItemKey = null;
+
+      // Dropdown event listeners
+      dropdownToggle.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('active');
+        dropdownToggle.setAttribute('aria-expanded', dropdownMenu.classList.contains('active'));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+          dropdownMenu.classList.remove('active');
+          dropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      dropdownMenu.addEventListener('click', (e) => {
+        const action = e.target.dataset.action;
+        if (action) {
+          console.log(`Action: ${action}`);
+          if (action === 'logout') {
+            auth.signOut().then(() => {
+              window.location.href = 'login.html';
+            });
+          }
+          dropdownMenu.classList.remove('active');
+        }
+      });
+
+      // Form submission (Add quantity or update item)
+      inventoryForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const user = auth.currentUser;
+        if (user) {
+          const itemName = document.getElementById('name').value.trim();
+          const quantityChange = parseInt(document.getElementById('quantity').value) || 0;
+          const expDate = document.getElementById('expiry-date').value;
+          const price = parseFloat(document.getElementById('price').value) || 0;
+
+          // Validate inputs
+          if (quantityChange < 0 || price < 0) {
+            showToast('Quantity and price cannot be negative.', true);
+            return;
+          }
+          if (!itemName) {
+            showToast('Item name is required.', true);
+            return;
+          }
+
+          if (isUpdateMode) {
+            // Full update via Edit button (replace all fields)
+            const item = {
+              ITEM: itemName,
+              QUANTITY: quantityChange,
+              EXP_DATE: expDate,
+              PRICE: price
+            };
+            database.ref(`user/${user.uid}/json/QUANTITY_SHEET/${currentItemKey}`).update(item)
+              .then(() => {
+                resetForm();
+                showToast('Item updated successfully');
+              })
+              .catch((error) => {
+                console.error('Error updating item:', error.message);
+                showToast('Error updating item', true);
+              });
+          } else {
+            // Add quantity to existing item or create new
+            database.ref(`user/${user.uid}/json/QUANTITY_SHEET/`).once('value')
+              .then((snapshot) => {
+                let itemExists = false;
+                let itemKey = null;
+                let currentItem = null;
+                if (snapshot.exists()) {
+                  snapshot.forEach((childSnapshot) => {
+                    if (childSnapshot.val().ITEM.toLowerCase() === itemName.toLowerCase()) {
+                      itemExists = true;
+                      itemKey = childSnapshot.key;
+                      currentItem = childSnapshot.val();
+                    }
+                  });
+                }
+
+                if (itemExists) {
+                  // Add quantity to existing item
+                  const newQuantity = (currentItem.QUANTITY || 0) + quantityChange;
+                  const updatedItem = {
+                    ITEM: itemName,
+                    QUANTITY: newQuantity,
+                    EXP_DATE: expDate || currentItem.EXP_DATE,
+                    PRICE: price || currentItem.PRICE
+                  };
+                  database.ref(`user/${user.uid}/json/QUANTITY_SHEET/${itemKey}`).update(updatedItem)
+                    .then(() => {
+                      inventoryForm.reset();
+                      showToast(`Added ${quantityChange} to ${itemName}. New quantity: ${newQuantity}`);
+                    })
+                    .catch((error) => {
+                      console.error('Error updating item:', error.message);
+                      showToast('Error updating item', true);
+                    });
+                } else {
+                  // Add new item
+                  const newItem = {
+                    ITEM: itemName,
+                    QUANTITY: quantityChange,
+                    EXP_DATE: expDate,
+                    PRICE: price
+                  };
+                  database.ref(`user/${user.uid}/json/QUANTITY_SHEET/`).push(newItem)
+                    .then((ref) => {
+                      inventoryForm.reset();
+                      showToast(`Item added successfully. Key: ${ref.key}`);
+                      const outputElement = document.getElementById('output');
+                      if (outputElement) {
+                        outputElement.innerHTML = `Last Item Key: ${ref.key}`;
+                      }
+                      console.log('New item key:', ref.key);
+                    })
+                    .catch((error) => {
+                      console.error('Error adding item:', error.message);
+                      showToast('Error adding item', true);
+                    });
+                }
+              })
+              .catch((error) => {
+                console.error('Error checking item existence:', error.message);
+                showToast('Error checking item', true);
+              });
+          }
+        }
+      });
+
+      // Remove quantity
+      outButton.addEventListener('click', () => {
+        const user = auth.currentUser;
+        if (user) {
+          const itemName = document.getElementById('name').value.trim();
+          const quantityChange = parseInt(document.getElementById('quantity').value) || 0;
+
+          // Validate inputs
+          if (!itemName) {
+            showToast('Item name is required.', true);
+            return;
+          }
+          if (quantityChange < 0) {
+            showToast('Quantity cannot be negative.', true);
+            return;
+          }
+
+          database.ref(`user/${user.uid}/json/QUANTITY_SHEET/`).once('value')
+            .then((snapshot) => {
+              let itemExists = false;
+              let itemKey = null;
+              let currentItem = null;
+              if (snapshot.exists()) {
+                snapshot.forEach((childSnapshot) => {
+                  if (childSnapshot.val().ITEM.toLowerCase() === itemName.toLowerCase()) {
+                    itemExists = true;
+                    itemKey = childSnapshot.key;
+                    currentItem = childSnapshot.val();
+                  }
+                });
+              }
+
+              if (itemExists) {
+                const currentQuantity = currentItem.QUANTITY || 0;
+                if (currentQuantity < quantityChange) {
+                  showToast(`Cannot remove ${quantityChange}. Only ${currentQuantity} available.`, true);
+                  return;
+                }
+                const newQuantity = currentQuantity - quantityChange;
+                const updatedItem = {
+                  ITEM: itemName,
+                  QUANTITY: newQuantity,
+                  EXP_DATE: currentItem.EXP_DATE,
+                  PRICE: currentItem.PRICE
+                };
+                database.ref(`user/${user.uid}/json/QUANTITY_SHEET/${itemKey}`).update(updatedItem)
+                  .then(() => {
+                    inventoryForm.reset();
+                    showToast(`Removed ${quantityChange} from ${itemName}. New quantity: ${newQuantity}`);
+                  })
+                  .catch((error) => {
+                    console.error('Error removing quantity:', error.message);
+                    showToast('Error removing quantity', true);
+                  });
+              } else {
+                showToast('Item not found.', true);
+              }
+            })
+            .catch((error) => {
+              console.error('Error checking item existence:', error.message);
+              showToast('Error checking item', true);
+            });
+        }
+      });
+
+      // Edit item (populate form)
+      dataTableBody.addEventListener('click', (e) => {
+        if (e.target.classList.contains('edit')) {
+          const key = e.target.dataset.key;
+          const user = auth.currentUser;
+          if (user) {
+            database.ref(`user/${user.uid}/json/QUANTITY_SHEET/${key}`).once('value')
+              .then((snapshot) => {
+                if (snapshot.exists()) {
+                  const data = snapshot.val();
+                  document.getElementById('name').value = data.ITEM || '';
+                  document.getElementById('quantity').value = data.QUANTITY || '';
+                  document.getElementById('expiry-date').value = data.EXP_DATE || '';
+                  document.getElementById('price').value = data.PRICE || '';
+                  isUpdateMode = true;
+                  currentItemKey = key;
+                  submitButton.textContent = 'Update Item';
+                  cancelButton.style.display = 'inline-block';
+                  outButton.style.display = 'none';
+                  console.log('Edit mode activated for item:', key);
+                }
+              })
+              .catch((error) => {
+                console.error('Error fetching item:', error.message);
+                showToast('Error fetching item', true);
+              });
+          }
+        }
+      });
+
+      // Cancel update
+      cancelButton.addEventListener('click', () => {
+        resetForm();
+        console.log('Update cancelled');
+      });
+
+      // Reset form to add mode
+      function resetForm() {
+        inventoryForm.reset();
+        isUpdateMode = false;
+        currentItemKey = null;
+        submitButton.textContent = 'Add Quantity';
+        cancelButton.style.display = 'none';
+        outButton.style.display = 'inline-block';
+      }
+      
+      downloadBtn.addEventListener('click', async () => {
+        const user = auth.currentUser;
+        if (!user) {
+          alert("Please login first");
+          return;
+        }
+        console.log("clicked")
+        try {
+          const snapshot = await database.ref(`user/${user.uid}/json/QUANTITY_SHEET`).once('value');
+          if (!snapshot.exists()) {
+            alert("No stock data available.");
+            return;
+          }
+          const data = [];
+          snapshot.forEach(child => {
+            const val = child.val();
+            data.push({
+              Name: val.ITEM || 'NULL',
+              Quantity: val.QUANTITY || 0,
+              "Expiry Date": val.EXP_DATE || 'NULL',
+              Price: val.PRICE || 0,
+            });
+          });
+
+          /* Generate worksheet */
+          const ws = XLSX.utils.json_to_sheet(data);
+          /* Generate workbook and add the worksheet */
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Stock Data");
+          /* Create binary excel file */
+          const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+          /* Create blob and trigger download */
+          const blob = new Blob([wbout], { type: "application/octet-stream" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'stock_data.xlsx';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        } catch (err) {
+          alert('Failed to download Excel file: ' + err.message);
+        }
+      });
+
+    });
+
+
+
+  </script>
+</body>
+
+</html>
